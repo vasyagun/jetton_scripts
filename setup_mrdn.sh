@@ -28,6 +28,6 @@ npm install
 for ((i=0; i<$GPU_COUNT; i++))
 do
     echo "Запуск майнера для GPU $i"
-    screen -dmS miner_$i bash -c "while true; do node send_universal.js --api $API --bin ./pow-miner-cuda --givers $GIVERS --gpu $i; sleep 1; done"
+    screen -dmS miner_$i bash -c "while true; do node send_meridian.js --api $API --bin ./pow-miner-cuda --givers $GIVERS --gpu $i; sleep 1; done"
 done
 
