@@ -1,28 +1,33 @@
 #!/bin/bash
 
-apt update && apt install -y git curl screen
+# Переменные, передаваемые пользователем
+SEED="$1"
+TOKEN="$2"
+GPU_COUNT="$3"
+API="$4"
+GIVERS="$5"
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm install 16
+# Установка необходимых пакетов
+apt update && apt install -y curl git screen
 
-git clone https://github.com/vasyagun/jetton_scripts.git && cd jetton_scripts
+# Установка Node.js
+curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+apt-get install -y nodejs
+
+# Клонирование и настройка майнера
+git clone https://github.com/TrueCarry/JettonGramGpuMiner.git
+cd JettonGramGpuMiner
+
+# Создание конфигурационного файла
+echo "SEED=$SEED" > config.txt
+echo "TONAPI_TOKEN=$TOKEN" >> config.txt
 
 npm install
 
+# Создание скриптов майнинга для каждого GPU
 for ((i=0; i<$GPU_COUNT; i++))
 do
-cat <<EOF > start_gpu_$i.sh
-#!/bin/bash
-while true; do
-  node send_multigpu.js --api $API --bin ./pow-miner-cuda --givers $GIVERS --gpu $i
-  sleep 1
-done
-EOF
-
-chmod +x start_gpu_$i.sh
-screen -dmS miner_$i ./start_gpu_$i.sh
-
+    echo "Запуск майнера для GPU $i"
+    screen -dmS miner_$i bash -c "while true; do node send_universal.js --api $API --bin ./pow-miner-cuda --givers $GIVERS --gpu $i; sleep 1; done"
 done
 
