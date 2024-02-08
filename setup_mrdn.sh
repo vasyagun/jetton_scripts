@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Переменные, передаваемые пользователем
-SEED="$1"
-TOKEN="$2"
-GPU_COUNT="$3"
-API="$4"
-GIVERS="$5"
+SEED="${SEED}"
+TOKEN="${TOKEN}"
+GPU_COUNT="${GPU_COUNT}"
+API="${API}"
+GIVERS="${GIVERS}"
 
 # Установка необходимых пакетов
 apt update && apt install -y curl git screen
