@@ -6,7 +6,7 @@ TOKEN="${TOKEN}"
 GPU_COUNT="${GPU_COUNT}"
 API="${API}"
 GIVERS="${GIVERS}"
-
+ 
 # Установка необходимых пакетов
 apt update && apt install -y curl git screen
 
